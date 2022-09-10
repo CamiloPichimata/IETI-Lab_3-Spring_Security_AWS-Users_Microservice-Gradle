@@ -8,13 +8,15 @@ public class UserDto {
     private String email;
     private String lastName;
     private String createdAt;
+    private String password;
 
-    public UserDto (String id, String name, String email, String lastName) {
+    public UserDto (String id, String name, String email, String lastName, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.lastName = lastName;
         this.createdAt = LocalDate.now().toString();
+        this.password = password;
     }
 
     public UserDto () {
@@ -59,5 +61,13 @@ public class UserDto {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

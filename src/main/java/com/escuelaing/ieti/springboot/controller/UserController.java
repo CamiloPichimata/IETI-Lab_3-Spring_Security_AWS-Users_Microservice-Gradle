@@ -80,9 +80,12 @@ public class UserController {
     }
 
     @PutMapping( "/api/v2/users/{id}" )
-    public ResponseEntity<UserDto> update( @RequestBody UserDto user, @PathVariable String id) {
+    public ResponseEntity<UserDto> update( @RequestBody UserDto userDto, @PathVariable String id) {
         try {
-            User userTemp = userService.update(modelMapper.map(user, User.class), id);
+            User userAux = new User();
+            userAux.toEntity(userDto);
+            User userTemp = userService.update(userAux, id);
+            //User userTemp = userService.update(modelMapper.map(userDto, User.class), id);
             if (userTemp != null) {
                 return new ResponseEntity<>(modelMapper.map(userTemp, UserDto.class), HttpStatus.OK);
             } else {
@@ -131,7 +134,7 @@ public class UserController {
     }
 
     @GetMapping("/api/v2/users/findUsersCreatedAfter/{startDate}")
-    public ResponseEntity<List<UserDto>> findUsersCreatedAfter (@PathVariable Date startDate) {
+    public ResponseEntity<List<UserDto>> findUsersCreatedAfter (@PathVariable String startDate) {
         try {
             List<User> users = userService.findUsersCreatedAfter(startDate);
             ArrayList<UserDto> data = new ArrayList<UserDto>();

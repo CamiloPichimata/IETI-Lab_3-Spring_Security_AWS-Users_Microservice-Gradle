@@ -1,10 +1,14 @@
 package com.escuelaing.ieti.springboot.entities;
 
+import com.escuelaing.ieti.springboot.dto.UserDto;
+import com.escuelaing.ieti.springboot.enums.RoleEnum;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Document
 public class User {
@@ -20,12 +24,25 @@ public class User {
 
     private String createdAt;
 
+    private String passwordHash;
+
+    private List<RoleEnum> roles;
+
     public User(String id, String name, String email, String lastName) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.lastName = lastName;
         this.createdAt = LocalDate.now().toString();
+    }
+
+    public User(String id, String name, String email, String lastName, UserDto userDto) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.lastName = lastName;
+        this.createdAt = LocalDate.now().toString();
+        this.passwordHash = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
     }
 
     public User() {
@@ -70,5 +87,25 @@ public class User {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public List<RoleEnum> getRoles() {
+        return roles;
+    }
+
+    public void toEntity(UserDto userDto) {
+        this.id = userDto.getId();
+        this.name = userDto.getName();
+        this.email = userDto.getEmail();
+        this.lastName = userDto.getLastName();
+        this.createdAt = LocalDate.now().toString();
+
+        if (userDto.getPassword() != null) {
+            this.passwordHash = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
+        }
     }
 }

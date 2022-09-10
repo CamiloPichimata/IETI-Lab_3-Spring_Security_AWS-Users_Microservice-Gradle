@@ -20,5 +20,8 @@ public interface UserService {
 
     List<User> findUsersWithNameOrLastNameLike(String queryText);
 
-    List<User> findUsersCreatedAfter(Date startDate);
+    List<User> findUsersCreatedAfter(String startDate);
+
+
+    User findByEmail(String email);
 }
