@@ -78,6 +78,46 @@ Seguido a esto hacemos una petición `POST` a la dirección `http://localhost:80
 {"email": "camilo@mail.com", "password": "abc1234"}
 ```
 
-En a respuesta se obtiene el token para el usuario como se puede ver a continuación:
+En la respuesta se obtiene el token para el usuario junto con su fecha de vencimiento como se puede ver a continuación:
 
 ![](img/P2-GetToken.png)
+
+### Parte 3: Implementar filtro de solicitudes JWT
+
+Finalmente y terminadas todas las implementaciones compilamos y ejecutamos el proyecto;
+Nuevamente realizamos la petición del token con las credenciales de usuario como se realizó anteriormente:
+
+![](img/P3-GetToken.png)
+
+Antes de utilizar el Token intentamos realizar una petición `GET` a la dirección `http://localhost:8080/api/v2/users` con el fin de obtener el listado de usuarios...
+
+![](img/P3-Test_1.png)
+
+Como se puede observar no se permite realizar la consulta aún debido a que no hemos utilizado el token que se hace necesario para acceder a la aplicación;
+Para poder obtener una respuesta satisfactoria debemos tomar el token obtenido, y lo incluimos en el encabezado como se puede ver a continuación, teniendo en cuenta la palabra `Bearer` que hace referencia al token utilizado:
+
+![](img/P3-Test_2.png)
+
+Como se puede ver la petición se realiza con éxito.
+
+Para probar el `delete` se creó un nuevo usuario y se asignaron roles de la siguiente manera
+
+![](img/P3-Users.png)
+
+Si generamos un token para el usuario con `id=2` e intentamos eliminar el usuario con `id=1` obtenemos lo siguiente:
+
+![](img/P3-Test_3.png)
+
+Por otro lado si intentamos eliminar el usuario con `id=2` mediante un token generado para el usuario con `id=1` obtenemos lo siguiente:
+
+![](img/P3-Test_4.png)
+
+Lo anterior debido a que se utilizó la anotación `@RolesAllowed("ADMIN")` para el Mapping de `delete` como se ve a continuación:
+
+```java
+@DeleteMapping( "/api/v2/users/{id}" )
+@RolesAllowed("ADMIN")
+public ResponseEntity<Boolean> delete( @PathVariable String id ){
+[...]
+}
+```
