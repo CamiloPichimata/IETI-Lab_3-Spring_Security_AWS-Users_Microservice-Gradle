@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,6 +101,7 @@ public class UserController {
     }
 
     @DeleteMapping( "/api/v2/users/{id}" )
+    @RolesAllowed("ADMIN")
     public ResponseEntity<Boolean> delete( @PathVariable String id ) {
         try {
             boolean deleted = userService.deleteById(id);
