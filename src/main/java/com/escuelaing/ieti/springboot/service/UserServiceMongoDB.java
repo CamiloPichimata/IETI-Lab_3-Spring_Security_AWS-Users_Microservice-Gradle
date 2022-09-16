@@ -23,6 +23,7 @@ public class UserServiceMongoDB implements UserService {
     @Override
     public User create(User user) {
         try {
+            System.out.println("\n Creando usuario en La base de datos:\n" + user.getId() + ", " + user.getName() + ", " + user.getPasswordHash());
             userRepository.insert(user);
             Optional<User> userTemp = userRepository.findById(user.getId());
             System.out.println("User Registered: " + userTemp);

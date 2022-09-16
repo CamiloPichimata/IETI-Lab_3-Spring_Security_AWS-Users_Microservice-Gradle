@@ -103,9 +103,6 @@ public class User {
         this.email = userDto.getEmail();
         this.lastName = userDto.getLastName();
         this.createdAt = LocalDate.now().toString();
-
-        if (userDto.getPassword() != null) {
-            this.passwordHash = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
-        }
+        this.passwordHash = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
     }
 }

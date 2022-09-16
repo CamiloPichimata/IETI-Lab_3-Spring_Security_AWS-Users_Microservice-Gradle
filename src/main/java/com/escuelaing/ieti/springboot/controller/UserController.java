@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -62,7 +61,9 @@ public class UserController {
     @PostMapping("/api/v2/users")
     public ResponseEntity<UserDto> create( @RequestBody UserDto userDto ) {
         try {
-            User newUser = userService.create(modelMapper.map(userDto, User.class));
+            User userMapped = new User();
+            userMapped.toEntity(userDto);
+            User newUser = userService.create(userMapped);
             if (newUser != null) {
                 return new ResponseEntity<>(modelMapper.map(newUser, UserDto.class), HttpStatus.CREATED);
             } else {

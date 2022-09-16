@@ -22,7 +22,7 @@ import static com.escuelaing.ieti.springboot.utils.Constants.CLAIMS_ROLES_KEY;
 import static com.escuelaing.ieti.springboot.utils.Constants.TOKEN_DURATION_MINUTES;
 
 @RestController
-@RequestMapping( "v1/auth" )
+@RequestMapping("/api/v2/auth")
 public class AuthController
 {
 
