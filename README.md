@@ -36,3 +36,48 @@ Se agregaron las dependencias especificadas, se agregó la clase y se testearon 
 
 ![](img/P1-Unauthorized.png)
 
+### Parte 2: Implementación del controlador de autenticación
+
+Después de agregar y actualizar las clases necesarias con los nuevos atributos y la creación del *AuthController* se agregó temporalmente el siguiente endpoint a la configuración de seguridad:
+
+```java
+[...]
+.antMatchers( HttpMethod.POST,"/api/v2/users" ).permitAll()
+[...]
+```
+
+Esto con el fin de agrgar un nuevo usuario para realizar las pruebas, el usuario agregado posee las siguiente caracteristicas:
+
+```json
+{
+    "id": "1",
+    "name": "Camilo",
+    "email": "camilo@mail.com",
+    "lastName": "Pérez",
+    "password": "abc1234"
+}
+```
+
+Para agregarlo se realizó una petición `POST` a la dirección `http://localhost:8080/api/v2/users` como se puede ver a continuación:
+
+![](img/P2-UserTestRegister.png)
+
+Como se puede ver la inserción se realizó con éxito.
+
+Ahora vamos a realizar la petición del token, para esto debemos al igual que en el paso anterior permitir las conexiones al endpoint `/api/v2/auth` a la configuración de seguridad de la siguiente forma:
+
+```java
+[...]
+.antMatchers( HttpMethod.POST, "/api/v2/auth").permitAll()
+[...]
+```
+
+Seguido a esto hacemos una petición `POST` a la dirección `http://localhost:8080/api/v2/auth` con el fin de generar un toquen que nos permita conectarnos a la aplicación como el usuario registrado anteriormente, en el cuerpo de la petición se envía lo siguiente:
+
+```json
+{"email": "camilo@mail.com", "password": "abc1234"}
+```
+
+En a respuesta se obtiene el token para el usuario como se puede ver a continuación:
+
+![](img/P2-GetToken.png)
